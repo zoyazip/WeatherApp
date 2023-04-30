@@ -15,6 +15,8 @@
 		2FCEA73729FBBBD000513EF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FCEA73529FBBBD000513EF2 /* LaunchScreen.storyboard */; };
 		2FCEA74329FBBC8E00513EF2 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCEA74229FBBC8E00513EF2 /* Weather.swift */; };
 		2FCEA74729FBCC3300513EF2 /* SearchCityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCEA74629FBCC3300513EF2 /* SearchCityViewController.swift */; };
+		2FCEA74A29FBF5ED00513EF2 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 2FCEA74929FBF5ED00513EF2 /* SDWebImage */; };
+		2FCEA74C29FEE31900513EF2 /* ChildViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCEA74B29FEE31900513EF2 /* ChildViewControllerDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,7 @@
 		2FCEA73829FBBBD000513EF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2FCEA74229FBBC8E00513EF2 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		2FCEA74629FBCC3300513EF2 /* SearchCityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCityViewController.swift; sourceTree = "<group>"; };
+		2FCEA74B29FEE31900513EF2 /* ChildViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildViewControllerDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FCEA74A29FBF5ED00513EF2 /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +79,7 @@
 			children = (
 				2FCEA72A29FBBBCE00513EF2 /* AppDelegate.swift */,
 				2FCEA72C29FBBBCE00513EF2 /* SceneDelegate.swift */,
+				2FCEA74B29FEE31900513EF2 /* ChildViewControllerDelegate.swift */,
 			);
 			path = Delegate;
 			sourceTree = "<group>";
@@ -121,6 +126,9 @@
 			dependencies = (
 			);
 			name = WeatherApp;
+			packageProductDependencies = (
+				2FCEA74929FBF5ED00513EF2 /* SDWebImage */,
+			);
 			productName = WeatherApp;
 			productReference = 2FCEA72729FBBBCE00513EF2 /* WeatherApp.app */;
 			productType = "com.apple.product-type.application";
@@ -149,6 +157,9 @@
 				Base,
 			);
 			mainGroup = 2FCEA71E29FBBBCE00513EF2;
+			packageReferences = (
+				2FCEA74829FBF5ED00513EF2 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			productRefGroup = 2FCEA72829FBBBCE00513EF2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -180,6 +191,7 @@
 				2FCEA74729FBCC3300513EF2 /* SearchCityViewController.swift in Sources */,
 				2FCEA72F29FBBBCE00513EF2 /* ViewController.swift in Sources */,
 				2FCEA72B29FBBBCE00513EF2 /* AppDelegate.swift in Sources */,
+				2FCEA74C29FEE31900513EF2 /* ChildViewControllerDelegate.swift in Sources */,
 				2FCEA72D29FBBBCE00513EF2 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -396,6 +408,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2FCEA74829FBF5ED00513EF2 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2FCEA74929FBF5ED00513EF2 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2FCEA74829FBF5ED00513EF2 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2FCEA71F29FBBBCE00513EF2 /* Project object */;
 }

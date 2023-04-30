@@ -8,14 +8,23 @@
 import UIKit
 
 class SearchCityViewController: UIViewController {
+    var delegate: ChildViewControllerDelegate?
+    var dataToSend: String?
 
+    @IBOutlet weak var cityField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
     
-
+    @IBAction func getWeatherBtn(_ sender: Any) {
+        dataToSend = cityField.text
+        delegate?.sendData(dataToSend!)
+        dismiss(animated: true)
+    }
+   
+    
     /*
     // MARK: - Navigation
 

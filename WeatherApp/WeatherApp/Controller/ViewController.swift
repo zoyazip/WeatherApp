@@ -6,11 +6,11 @@
 //
 
 import UIKit
-import CoreLocation
 
+import SDWebImage
 
-class ViewController: UIViewController {
-    let geocoder = CLGeocoder()
+class ViewController: UIViewController, ChildViewControllerDelegate {
+    
     var weather: Weather?
     
     
@@ -22,32 +22,29 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getData(city: "Riga")
-        print(weather)
+        //getData(city: "Valmiera")
         
+ 
+    }
+    func sendData(_ data: String?) {
+        guard let updatedData = data else {
+            return
+        }
+        getData(city: updatedData)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        getData(city: "Valmiera")
+    }
     
     func getData(city: String){
-        var lat: Double = 56.949650
-        var lon: Double = 24.105186
         
-        //        geocoder.geocodeAddressString(city) { placemark, error in
-        //            if let error = error {
-        //                print("Geocoding error: \(error.localizedDescription)")
-        //                return
-        //            }
-        //            if let placemark = placemark?.first, let location = placemark.location{
-        //                lat = location.coordinate.latitude
-        //                lon = location.coordinate.longitude
-        //            }
-        //        }
         let key: String = "0a48a3046579a5da02940412d624f461"
         
+        let jsonUrl = "https://api.openweathermap.org/data/2.5/weather?q=\(city)&appid=\(key)&units=metric"
         
-        let jsonUrl = "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(key)"
-        
-        guard let url = URL(string: jsonUrl) else { return }
+        guard let url = URL(string: jsonUrl) else {
+            return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -70,12 +67,43 @@ class ViewController: UIViewController {
                 //dump(jsonData)
                 self.weather = jsonData
                 
+                DispatchQueue.main.async {
+                    self.cityName.text = jsonData.name
+                    self.temperature.text = "\(Int(jsonData.main.temp)) °C"
+                    self.weatherIcon.sd_setImage(with: URL(string: self.getWeatherIconURL(iconCode: jsonData.weather.first?.icon ?? "01d")))
+                    
+                }
+                
             }catch{
+                self.showAlert(city: city)
                 print("error:::::" , error)
             }
             
         }.resume()
         
+    }
+    
+    func getWeatherIconURL(iconCode: String) -> String {
+        let iconURLString = "https://openweathermap.org/img/wn/\(iconCode).png"
+        return iconURLString
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if segue.identifier == "getWeatherSegue" {
+                if let childViewController = segue.destination as? SearchCityViewController {
+                    childViewController.delegate = self
+                }
+            }
+        }
+    
+    func showAlert(city: String) {
+        let alertController = UIAlertController(title: "Something went wrong..", message: "Sorry, but we can't find \(city)", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        
+        alertController.addAction(okAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
 }
 
