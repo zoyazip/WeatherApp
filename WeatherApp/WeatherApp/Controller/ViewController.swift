@@ -6,11 +6,12 @@
 //
 
 import UIKit
-
+import CoreLocation
 import SDWebImage
 
-class ViewController: UIViewController, ChildViewControllerDelegate {
-    
+class ViewController: UIViewController, ChildViewControllerDelegate, CLLocationManagerDelegate{
+    var currentCity: String?
+    let locationManager = CLLocationManager()
     var weather: Weather?
     
     
@@ -22,9 +23,10 @@ class ViewController: UIViewController, ChildViewControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //getData(city: "Valmiera")
-        
- 
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+//        getData(city: currentCity ?? "Valmiera")
     }
     func sendData(_ data: String?) {
         guard let updatedData = data else {
@@ -34,8 +36,45 @@ class ViewController: UIViewController, ChildViewControllerDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getData(city: "Valmiera")
+        locationManager.startUpdatingLocation()
+        getData(city: currentCity ?? "Valmiera")
     }
+    
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            locationManager.delegate = self
+            locationManager.startUpdatingLocation()
+            locationManager.requestLocation()
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            guard let location = locations.last else { return }
+            let geocoder = CLGeocoder()
+            
+            geocoder.reverseGeocodeLocation(location) { [weak self] (placemarks, error) in
+                guard let self = self else { return }
+                
+                if let error = error {
+                    print("Reverse geocoding failed with error: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let placemark = placemarks?.first else {
+                    print("No placemark found.")
+                    return
+                }
+                
+                if let city = placemark.locality {
+                    self.currentCity = city
+                    print("Current city: \(city)")
+                } else {
+                    print("Unable to determine the city.")
+                }
+                
+            }
+        }
     
     func getData(city: String){
         
@@ -89,12 +128,12 @@ class ViewController: UIViewController, ChildViewControllerDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "getWeatherSegue" {
-                if let childViewController = segue.destination as? SearchCityViewController {
-                    childViewController.delegate = self
-                }
+        if segue.identifier == "getWeatherSegue" {
+            if let childViewController = segue.destination as? SearchCityViewController {
+                childViewController.delegate = self
             }
         }
+    }
     
     func showAlert(city: String) {
         let alertController = UIAlertController(title: "Something went wrong..", message: "Sorry, but we can't find \(city)", preferredStyle: .alert)
